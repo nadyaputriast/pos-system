@@ -13,5 +13,7 @@ class Product extends Model
         'name',
         'description',
         'price',
+        'ppn',
+        'pph',
     ];
 }

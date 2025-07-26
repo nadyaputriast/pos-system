@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('total_amount', 10, 2);
             $table->decimal('tax', 10, 2)->default(0);
-            $table->boolean('status');
+            $table->enum('status', ['lunas', 'cicil']);
             $table->enum('payment_method', ['cash', 'bank_transfer']);
             $table->string('bank_name')->nullable();
             $table->string('payment_proof')->nullable();
@@ -25,12 +25,10 @@ return new class extends Migration
             $table->decimal('ppn', 10, 2)->nullable();
             $table->decimal('pph', 10, 2)->nullable();
             $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('product_id');
             $table->timestamps();
 
             // foreign key
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

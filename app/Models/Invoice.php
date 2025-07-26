@@ -22,6 +22,15 @@ class Invoice extends Model
         'ppn',
         'pph',
         'client_id',
-        'product_id',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'invoice_products');
+    }
 }

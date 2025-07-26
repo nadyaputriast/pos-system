@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->decimal('price', 10, 2);
+            $table->decimal('ppn', 10, 2)->default(0);
+            $table->decimal('pph', 10, 2)->default(0);
             $table->timestamps();
         });
     }
