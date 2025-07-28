@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('invoice_id');
             $table->unsignedBigInteger('product_id');
+            $table->integer('qty')->default(1);
+            $table->decimal('subtotal', 10, 2)->default(0.00);
             $table->timestamps();
 
             // foreign key
