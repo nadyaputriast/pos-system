@@ -277,6 +277,18 @@ class InvoiceResource extends Resource
                     })
                     ->requiresConfirmation()
                     ->color('success'),
+
+                
+                 Tables\Actions\Action::make('cetak')
+                ->label('Cetak')
+                ->icon('heroicon-o-printer')
+                ->url(fn($record) => route('invoice.print', $record))
+                ->openUrlInNewTab()
+                ->color('gray')
+                ->tooltip('Cetak Invoice'),
+
+
+
                 Tables\Actions\Action::make('kirim')
                     ->label('Kirim Email')
                     ->icon('heroicon-o-paper-airplane')
