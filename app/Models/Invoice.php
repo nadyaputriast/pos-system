@@ -36,6 +36,11 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function lastPayment()
+    {
+        return $this->hasOne(Payment::class)->latestOfMany();
+    }
+
     public function getPaidAmountAttribute()
     {
         return $this->payments()->sum('amount');

@@ -9,7 +9,7 @@ class InvoiceController extends Controller
 {
     public function download($id)
     {
-        $invoice = Invoice::with(['products', 'client'])->findOrFail($id);
+        $invoice = Invoice::with(['products', 'client', 'lastPayment'])->findOrFail($id);
         $pdf = Pdf::loadView('invoices.print', compact('invoice'));
         return $pdf->download('invoice-' . $invoice->id . '.pdf');
     }
@@ -17,7 +17,9 @@ class InvoiceController extends Controller
     public function print($id)
     {
         $invoice = Invoice::with(['products', 'client'])->findOrFail($id);
-
-        return view('invoices.print', compact('invoice'));
+        $pdf = Pdf::loadView('invoices.print', compact('invoice'));
+        return $pdf->stream('invoice-' . $invoice->id . '.pdf'); // tampil langsung di browser
+        // atau:
+        // return $pdf->download('invoice-'.$invoice->id.'.pdf'); // untuk download langsung
     }
 }

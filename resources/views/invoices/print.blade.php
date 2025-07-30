@@ -1,130 +1,158 @@
 <!-- filepath: resources/views/invoices/print.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Invoice #{{ $invoice->id }}</title>
     <style>
+        @page {
+            size: A4;
+            margin: 120px 30px 80px 30px;
+        }
+
         body {
             font-family: sans-serif;
-            background: #f3f4f6;
             color: #333;
-            padding: 2rem;
+            margin: 0;
         }
-        .invoice-container {
-            max-width: 900px;
-            margin: auto;
+
+        .header,
+        .footer {
+            width: 100%;
+            position: fixed;
+            left: 0;
+            right: 0;
             background: #fff;
-            padding: 2.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
+
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 2.5rem;
+            top: 0;
+            height: 110px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
         }
+
+        .footer {
+            bottom: 0;
+            height: 70px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+        }
+
+        .content {
+            margin-top: 120px;
+            margin-bottom: 80px;
+        }
+
         .logo {
-            width: 128px;
+            width: 120px;
             height: auto;
         }
+
         h2 {
             color: #02aaf1;
             font-size: 2rem;
             font-weight: bold;
-            margin-bottom: 0.5rem;
+            margin: 0 0 0.5rem 0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
-        th, td {
-            padding: 0.75rem;
+
+        th,
+        td {
+            padding: 0.5rem;
             border-bottom: 1px solid #e5e7eb;
         }
+
         thead {
             background: #02aaf1;
             color: #fff;
         }
-        .summary {
-            background: #02aaf1;
-            color: #fff;
-            font-weight: bold;
-        }
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-        .font-semibold {
-            font-weight: 600;
-        }
+
         .grand-total {
             background: #02aaf1;
             color: #fff;
             font-weight: bold;
             padding: 0.75rem;
             border-radius: 0.25rem;
-        }
-        .signature {
             text-align: right;
-            margin-top: 3rem;
+            margin-top: 1rem;
         }
-        .signature img {
-            width: 120px;
+
+        .summary-table {
+            width: 100%;
+            margin-bottom: 1.5rem;
         }
-        .footer {
-            margin-top: 2.5rem;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        .print-btn {
-            display: block;
-            margin: 2rem auto 0 auto;
-            background: #02aaf1;
-            color: #fff;
-            padding: 10px 24px;
+
+        .summary-table td {
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            padding: 0.25rem 0.5rem;
             font-size: 1rem;
         }
-        @media print {
-            body {
-                background: #fff !important;
-                color: #000 !important;
-            }
-            .invoice-container {
-                box-shadow: none !important;
-                border-radius: 0 !important;
-            }
-            .footer {
-                color: #000 !important;
-            }
-            .print-btn, .no-print {
-                display: none !important;
-            }
+
+        .summary-label {
+            text-align: right;
+            font-weight: bold;
+            width: 80%;
+        }
+
+        .summary-value {
+            text-align: right;
+            width: 20%;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 2rem;
+        }
+
+        .signature img {
+            width: 100px;
         }
     </style>
 </head>
-<body>
-    <div class="invoice-container">
-        <div class="header">
-            <div>
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" class="logo">
-                <h2>INVOICE</h2>
-                <p>Invoice No: <strong>#{{ $invoice->id }}</strong></p>
-                <p>Date: {{ $invoice->created_at->format('d-m-Y') }}</p>
-            </div>
-            <div>
-                <p style="font-weight: bold;">Invoice to:</p>
-                <p>{{ $invoice->client->name }}</p>
-                <p>{{ $invoice->client->email }}</p>
-            </div>
-        </div>
 
+<body>
+    <div class="header">
+        <table width="100%" style="border: none;">
+            <tr>
+                <td style="width:130px; vertical-align:top; border:none;">
+                    <img src="{{ public_path('storage/img/logo.png') }}" alt="Logo" class="logo">
+                </td>
+                <td style="vertical-align:top; border:none;">
+                    <h2>INVOICE</h2>
+                    <p style="margin:0;">Invoice No: <strong>#{{ $invoice->id }}</strong></p>
+                    <p style="margin:0;">Date: {{ $invoice->created_at->format('d-m-Y') }}</p>
+                </td>
+                <td style="vertical-align:top; text-align:right; border:none;">
+                    <p style="font-weight: bold; margin:0;">Invoice to:</p>
+                    <p style="margin:0;">{{ $invoice->client->name }}</p>
+                    <p style="margin:0;">{{ $invoice->client->email }}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">
+        <div style="width:100%;">
+            <p style="margin:0;">CV. Sinar Teknologi Indonesia - Jl. Diponegoro No.165a, Dauh Puri Klod, Kec. Denpasar
+                Bar., Kota Denpasar, Bali, 80114.</p>
+            <p style="margin:0;">Telp: +62 821-4440-9789 | Email: sintekstudio@gmail.com</p>
+        </div>
+    </div>
+
+    <div class="content">
         <table>
             <thead>
                 <tr>
@@ -135,60 +163,54 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($invoice->products as $product)
-                <tr>
-                    <td>
-                        {{ $product->name }}<br>
-                        <span style="font-size: 0.9em; color: #666;">{{ $product->pivot->description }}</span>
-                    </td>
-                    <td style="text-align:right;">Rp {{ number_format($product->price, 2, ',', '.') }}</td>
-                    <td style="text-align:right;">{{ $product->pivot->qty }}</td>
-                    <td style="text-align:right;">Rp {{ number_format($product->pivot->subtotal, 2, ',', '.') }}</td>
-                </tr>
+                @foreach ($invoice->products->take(15) as $product)
+                    <tr>
+                        <td>
+                            {{ $product->name }}<br>
+                            <span style="font-size: 0.9em; color: #666;">{{ $product->pivot->description }}</span>
+                        </td>
+                        <td style="text-align:right;">Rp {{ number_format($product->price, 2, ',', '.') }}</td>
+                        <td style="text-align:right;">{{ $product->pivot->qty }}</td>
+                        <td style="text-align:right;">Rp {{ number_format($product->pivot->subtotal, 2, ',', '.') }}
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <div>
-            <div class="flex-between">
-                <span class="font-semibold">Tax (PPN 11%):</span>
-                <span>Rp {{ number_format($invoice->ppn, 2, ',', '.') }}</span>
-            </div>
-            <div class="flex-between">
-                <span class="font-semibold">Tax (PPH 5%):</span>
-                <span>Rp {{ number_format($invoice->pph, 2, ',', '.') }}</span>
-            </div>
-            <div class="flex-between">
-                <span class="font-semibold">Discount:</span>
-                <span>Rp {{ number_format($invoice->discount ?? 0, 2, ',', '.') }}</span>
-            </div>
-            <div class="grand-total flex-between" style="margin-top:1rem;">
-                <span>Grand Total:</span>
-                <span>Rp {{ number_format($invoice->total_amount, 2, ',', '.') }}</span>
-            </div>
+        <table class="summary-table">
+            <tr>
+                <td class="summary-label">Tax (PPN 11%):</td>
+                <td class="summary-value">Rp {{ number_format($invoice->ppn, 2, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <td class="summary-label">Tax (PPH 5%):</td>
+                <td class="summary-value">Rp {{ number_format($invoice->pph, 2, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <td class="summary-label">Discount:</td>
+                <td class="summary-value">Rp {{ number_format($invoice->discount ?? 0, 2, ',', '.') }}</td>
+            </tr>
+        </table>
+
+        <div class="grand-total">
+            Grand Total: Rp {{ number_format($invoice->total_amount, 2, ',', '.') }}
         </div>
 
-        <p style="margin-bottom: 2rem;">
-            <strong>Payment Method:</strong> {{ ucfirst(str_replace('_', ' ', $invoice->payment_method)) }}
-            @if($invoice->bank_name)
-                ({{ $invoice->bank_name }})
+        <p style="margin-bottom: 2rem; margin-top:2rem;">
+            <strong>Payment Method:</strong>
+            {{ $invoice->lastPayment?->payment_method ? ucfirst(str_replace('_', ' ', $invoice->lastPayment->payment_method)) : '-' }}
+            @if ($invoice->lastPayment?->bank_name)
+                ({{ $invoice->lastPayment->bank_name }})
             @endif
         </p>
 
         <div class="signature">
             <p style="margin-bottom: 10px;">Authorized Signature:</p>
-            <img src="{{ asset('img/ttd_direktur.png') }}" alt="Tanda Tangan">
-            <p style="font-weight: bold;">{{ $invoice->authorized_by ?? 'Manager' }}</p>
-        </div>
-
-        <div class="footer">
-            <p>CV. Sinar Teknologi Indonesia -  Jl. Diponegoro No.165a, Dauh Puri Klod, Kec. Denpasar Bar., Kota Denpasar, Bali, 80114.</p>
-            <p>Telp: +62 821-4440-9789 | Email: sintekstudio@gmail.com</p>
+            <img src="{{ public_path('storage/img/ttd_direktur.png') }}" alt="Tanda Tangan">
+            <p style="font-weight: bold;">{{ $invoice->authorized_by ?? 'Direktur' }}</p>
         </div>
     </div>
-
-    <button onclick="window.print()" class="print-btn no-print">
-        🖨️ Cetak Invoice
-    </button>
 </body>
+
 </html>
