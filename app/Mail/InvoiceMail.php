@@ -3,10 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Invoice;
 
@@ -15,15 +12,17 @@ class InvoiceMail extends Mailable
     use Queueable, SerializesModels;
 
     public $invoice;
+    public $subjectLine;
 
-    public function __construct(Invoice $invoice)
+    public function __construct(Invoice $invoice, $subjectLine = null)
     {
         $this->invoice = $invoice;
+        $this->subjectLine = $subjectLine ?? 'Invoice #' . $invoice->id;
     }
 
     public function build()
     {
-        return $this->subject('Invoice #' . $this->invoice->id)
+        return $this->subject($this->subjectLine)
             ->view('emails.invoice');
     }
 }

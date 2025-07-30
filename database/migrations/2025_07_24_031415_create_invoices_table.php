@@ -13,18 +13,13 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->decimal('total_amount', 10, 2);
-            $table->decimal('tax', 10, 2)->default(0);
-            $table->enum('status', ['lunas', 'cicil']);
-            $table->enum('payment_method', ['cash', 'bank_transfer']);
-            $table->string('bank_name')->nullable();
-            $table->string('payment_proof')->nullable();
-            $table->string('payment_note')->nullable();
-            $table->date('deadline');
-            $table->decimal('paid_amount', 10, 2)->nullable();
-            $table->decimal('ppn', 10, 2)->nullable();
-            $table->decimal('pph', 10, 2)->nullable();
             $table->unsignedBigInteger('client_id');
+            $table->decimal('total_amount', 15, 2);
+            $table->decimal('tax', 15, 2)->default(0);
+            $table->decimal('ppn', 15, 2)->default(0);
+            $table->decimal('pph', 15, 2)->default(0);
+            $table->enum('status', ['lunas', 'cicil']);
+            $table->date('deadline');
             $table->timestamps();
 
             // foreign key

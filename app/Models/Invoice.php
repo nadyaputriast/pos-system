@@ -10,18 +10,13 @@ class Invoice extends Model
     public $incrementing = true;
 
     protected $fillable = [
+        'client_id',
         'total_amount',
         'tax',
-        'status',
-        'payment_method',
-        'bank_name',
-        'payment_proof',
-        'payment_note',
-        'deadline',
-        'paid_amount',
         'ppn',
         'pph',
-        'client_id',
+        'status',
+        'deadline',
     ];
 
     public function client()
@@ -34,5 +29,15 @@ class Invoice extends Model
         return $this->belongsToMany(Product::class, 'invoice_products')
             ->withPivot(['qty', 'subtotal'])
             ->withTimestamps();
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function getPaidAmountAttribute()
+    {
+        return $this->payments()->sum('amount');
     }
 }
